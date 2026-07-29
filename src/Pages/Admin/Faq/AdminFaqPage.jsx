@@ -9,12 +9,12 @@ import Swal from 'sweetalert2'
 
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 
-import { getMaincategory, deleteMaincategory } from "../../../Redux/ActionCreators/MaincategoryActionCreators"
+import { getFaq, deleteFaq } from "../../../Redux/ActionCreators/FaqActionCreators"
 
-export default function AdminMaincategoryPage() {
+export default function AdminFaqPage() {
     let [data, setData] = useState([])
 
-    let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
+    let FaqStateData = useSelector(state => state.FaqStateData)
     let dispatch = useDispatch()
 
     function deleteRecords(id) {
@@ -30,7 +30,7 @@ export default function AdminMaincategoryPage() {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(deleteMaincategory({ id: id }))
+                dispatch(deleteFaq({ id: id }))
                 setData(data.filter(x => x.id !== id))
 
                 Swal.fire({
@@ -44,9 +44,9 @@ export default function AdminMaincategoryPage() {
 
     useEffect(() => {
         let time = (() => {
-            dispatch(getMaincategory())
-            if (MaincategoryStateData.length) {
-                setData(MaincategoryStateData)
+            dispatch(getFaq())
+            if (FaqStateData.length) {
+                setData(FaqStateData)
                 let time = setTimeout(() => {
                     new DataTable('#myTable');
                 }, 500)
@@ -54,7 +54,7 @@ export default function AdminMaincategoryPage() {
             }
         })()
         return () => clearTimeout(time)
-    }, [MaincategoryStateData.length])
+    }, [FaqStateData.length])
 
     return (
         <>
@@ -64,8 +64,8 @@ export default function AdminMaincategoryPage() {
                         <AdminSidebar />
                     </div>
                     <div className="col-lg-9">
-                        <h5 className='bg-primary p-2 text-light text-center'>Maincategory
-                            <Link to="/admin/maincategory/create">
+                        <h5 className='bg-primary p-2 text-light text-center'>Faq
+                            <Link to="/admin/faq/create">
                                 <i className='bi bi-plus text-light float-end'></i>
                             </Link>
                         </h5>
@@ -73,8 +73,8 @@ export default function AdminMaincategoryPage() {
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Pic</th>
+                                    <th>Question</th>
+                                    <th>Answer</th>
                                     <th>Status</th>
                                     <th></th>
                                     <th></th>
@@ -84,14 +84,10 @@ export default function AdminMaincategoryPage() {
                                 {data.map(item => {
                                     return <tr key={item.id}>
                                         <td>{item.id}</td>
-                                        <td>{item.name}</td>
-                                        <td>
-                                            <Link to={`${import.meta.env.VITE_APP_IMAGE_SERVER}${item.pic}`} target='_blank'>
-                                                <img src={`${import.meta.env.VITE_APP_IMAGE_SERVER}${item.pic}`} height={70} width={70} alt='' />
-                                            </Link>
-                                        </td>
+                                        <td>{item.question}</td>
+                                        <td>{item.answer}</td>
                                         <td>{item.status ? "Active" : "Inactive"}</td>
-                                        <td><Link to={`/admin/maincategory/update/${item.id}`} className='btn btn-primary'><i className='bi bi-pencil-square'></i></Link></td>
+                                        <td><Link to={`/admin/faq/update/${item.id}`} className='btn btn-primary'><i className='bi bi-pencil-square'></i></Link></td>
                                         <td><button onClick={() => deleteRecords(item.id)} className='btn btn-danger'><i className='bi bi-trash'></i></button></td>
                                     </tr>
                                 })}

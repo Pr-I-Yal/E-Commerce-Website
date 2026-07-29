@@ -9,12 +9,12 @@ import Swal from 'sweetalert2'
 
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 
-import { getMaincategory, deleteMaincategory } from "../../../Redux/ActionCreators/MaincategoryActionCreators"
+import { getBrand, deleteBrand } from "../../../Redux/ActionCreators/BrandActionCreators"
 
-export default function AdminMaincategoryPage() {
+export default function AdminBrandPage() {
     let [data, setData] = useState([])
 
-    let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
+    let BrandStateData = useSelector(state => state.BrandStateData)
     let dispatch = useDispatch()
 
     function deleteRecords(id) {
@@ -30,7 +30,7 @@ export default function AdminMaincategoryPage() {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(deleteMaincategory({ id: id }))
+                dispatch(deleteBrand({ id: id }))
                 setData(data.filter(x => x.id !== id))
 
                 Swal.fire({
@@ -44,9 +44,9 @@ export default function AdminMaincategoryPage() {
 
     useEffect(() => {
         let time = (() => {
-            dispatch(getMaincategory())
-            if (MaincategoryStateData.length) {
-                setData(MaincategoryStateData)
+            dispatch(getBrand())
+            if (BrandStateData.length) {
+                setData(BrandStateData)
                 let time = setTimeout(() => {
                     new DataTable('#myTable');
                 }, 500)
@@ -54,7 +54,7 @@ export default function AdminMaincategoryPage() {
             }
         })()
         return () => clearTimeout(time)
-    }, [MaincategoryStateData.length])
+    }, [BrandStateData.length])
 
     return (
         <>
@@ -64,8 +64,8 @@ export default function AdminMaincategoryPage() {
                         <AdminSidebar />
                     </div>
                     <div className="col-lg-9">
-                        <h5 className='bg-primary p-2 text-light text-center'>Maincategory
-                            <Link to="/admin/maincategory/create">
+                        <h5 className='bg-primary p-2 text-light text-center'>Brand
+                            <Link to="/admin/brand/create">
                                 <i className='bi bi-plus text-light float-end'></i>
                             </Link>
                         </h5>
@@ -91,7 +91,7 @@ export default function AdminMaincategoryPage() {
                                             </Link>
                                         </td>
                                         <td>{item.status ? "Active" : "Inactive"}</td>
-                                        <td><Link to={`/admin/maincategory/update/${item.id}`} className='btn btn-primary'><i className='bi bi-pencil-square'></i></Link></td>
+                                        <td><Link to={`/admin/brand/update/${item.id}`} className='btn btn-primary'><i className='bi bi-pencil-square'></i></Link></td>
                                         <td><button onClick={() => deleteRecords(item.id)} className='btn btn-danger'><i className='bi bi-trash'></i></button></td>
                                     </tr>
                                 })}

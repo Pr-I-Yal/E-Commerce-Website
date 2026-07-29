@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -6,9 +6,9 @@ import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 import ImageValidators from '../../../Validators/ImageValidators'
 import TextValidators from '../../../Validators/TextValidators'
 
-import { getMaincategory, updateMaincategory } from "../../../Redux/ActionCreators/MaincategoryActionCreators"
+import { getBrand, updateBrand } from "../../../Redux/ActionCreators/BrandActionCreators"
 
-export default function AdminUpdateMaincategoryPage() {
+export default function AdminUpdateBrandPage() {
     let { id } = useParams()
     let [data, setData] = useState({
         name: "",
@@ -22,18 +22,18 @@ export default function AdminUpdateMaincategoryPage() {
     })
 
     let [show, setShow] = useState(false)
-    let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
+    let BrandStateData = useSelector(state => state.BrandStateData)
     let dispatch = useDispatch()
 
     let navigate = useNavigate()
 
     function getInputData(e) {
         let name = e.target.name
-        // let value = name === "pic" ? "maincategory/" + e.target.files[0].name : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
+        // let value = name === "pic" ? "Brand/" + e.target.files[0].name : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
         //OR
         let value = ""
         if (name === "pic")
-            value = "maincategory/" + e.target.files[0].name
+            value = "brand/" + e.target.files[0].name
         else if (name === "status")
             value = e.target.value === "1" ? true : false
         else
@@ -49,29 +49,29 @@ export default function AdminUpdateMaincategoryPage() {
         if (error)
             setShow(true)
         else {
-            let item = MaincategoryStateData.find(x => x.id !== id && x.name.toLocaleLowerCase() === data.name.toLocaleLowerCase())
+            let item = BrandStateData.find(x => x.id !== id && x.name.toLocaleLowerCase() === data.name.toLocaleLowerCase())
             if (item) {
-                setErrorMessage({ ...errorMessage, name: "Maincategory With This Name Already Exists" })
+                setErrorMessage({ ...errorMessage, name: "Brand With This Name Already Exists" })
                 setShow(true)
-                return
+                returnF
             }
-            dispatch(updateMaincategory({ ...data }))
-            navigate("/admin/maincategory")
+            dispatch(updateBrand({ ...data }))
+            navigate("/admin/brand")
         }
     }
 
     useEffect(() => {
         (() => {
-            dispatch(getMaincategory())
-            if (MaincategoryStateData.length) {
-                let item = MaincategoryStateData.find(x => x.id === id)
+            dispatch(getBrand())
+            if (BrandStateData.length) {
+                let item = BrandStateData.find(x => x.id === id)
                 if (item)
                     setData({ ...data, ...item })
                 else
-                    navigate("/admin/maincategory")
+                    navigate("/admin/brand")
             }
         })()
-    }, [MaincategoryStateData.length])
+    }, [BrandStateData.length])
 
     return (
         <>
@@ -81,8 +81,8 @@ export default function AdminUpdateMaincategoryPage() {
                         <AdminSidebar />
                     </div>
                     <div className="col-lg-9">
-                        <h5 className='bg-primary p-2 text-light text-center'>Update Maincategory
-                            <Link to="/admin/maincategory">
+                        <h5 className='bg-primary p-2 text-light text-center'>Update Brand
+                            <Link to="/admin/brand">
                                 <i className='bi bi-arrow-left text-light float-end'></i>
                             </Link>
                         </h5>
@@ -94,7 +94,7 @@ export default function AdminUpdateMaincategoryPage() {
                                         name="name"
                                         value={data.name}
                                         onChange={getInputData}
-                                        placeholder='Maincategory Name'
+                                        placeholder='Brand Name'
                                         className={`form-control ${show && errorMessage.name ? 'border-danger' : 'border-primary'}`}
                                     />
                                     {show && errorMessage.name ? <p className='text-danger'>{errorMessage.name}</p> : null}

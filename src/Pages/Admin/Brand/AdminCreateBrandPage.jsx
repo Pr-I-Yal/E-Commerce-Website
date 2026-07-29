@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import React, { use, useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 import ImageValidators from '../../../Validators/ImageValidators'
 import TextValidators from '../../../Validators/TextValidators'
 
-import { getMaincategory, updateMaincategory } from "../../../Redux/ActionCreators/MaincategoryActionCreators"
+import { createBrand, getBrand } from '../../../Redux/ActionCreators/BrandActionCreators'
 
-export default function AdminUpdateMaincategoryPage() {
-    let { id } = useParams()
+export default function AdminCreateBrandPage() {
     let [data, setData] = useState({
         name: "",
         pic: "",
@@ -17,23 +16,23 @@ export default function AdminUpdateMaincategoryPage() {
     })
 
     let [errorMessage, setErrorMessage] = useState({
-        name: "",
-        pic: ""
+        name: "This field is mandatory.",
+        pic: "This field is mandatory."
     })
 
     let [show, setShow] = useState(false)
-    let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
+    let BrandStateData = useSelector(state => state.BrandStateData)
     let dispatch = useDispatch()
 
     let navigate = useNavigate()
 
     function getInputData(e) {
         let name = e.target.name
-        // let value = name === "pic" ? "maincategory/" + e.target.files[0].name : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
+        // let value = name === "pic" ? "Brand/" + e.target.files[0].name : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
         //OR
         let value = ""
         if (name === "pic")
-            value = "maincategory/" + e.target.files[0].name
+            value = "brand/" + e.target.files[0].name
         else if (name === "status")
             value = e.target.value === "1" ? true : false
         else
@@ -49,29 +48,22 @@ export default function AdminUpdateMaincategoryPage() {
         if (error)
             setShow(true)
         else {
-            let item = MaincategoryStateData.find(x => x.id !== id && x.name.toLocaleLowerCase() === data.name.toLocaleLowerCase())
+            let item = BrandStateData.find(x => x.name.toLocaleLowerCase() === data.name?.toLocaleLowerCase())
             if (item) {
-                setErrorMessage({ ...errorMessage, name: "Maincategory With This Name Already Exists" })
+                setErrorMessage({ ...errorMessage, name: "Brand With This Name Already Exists" })
                 setShow(true)
                 return
             }
-            dispatch(updateMaincategory({ ...data }))
-            navigate("/admin/maincategory")
+            dispatch(createBrand({ ...data }))
+            navigate("/admin/brand")
         }
     }
 
     useEffect(() => {
         (() => {
-            dispatch(getMaincategory())
-            if (MaincategoryStateData.length) {
-                let item = MaincategoryStateData.find(x => x.id === id)
-                if (item)
-                    setData({ ...data, ...item })
-                else
-                    navigate("/admin/maincategory")
-            }
+            dispatch(getBrand())
         })()
-    }, [MaincategoryStateData.length])
+    }, [BrandStateData.length])
 
     return (
         <>
@@ -81,8 +73,8 @@ export default function AdminUpdateMaincategoryPage() {
                         <AdminSidebar />
                     </div>
                     <div className="col-lg-9">
-                        <h5 className='bg-primary p-2 text-light text-center'>Update Maincategory
-                            <Link to="/admin/maincategory">
+                        <h5 className='bg-primary p-2 text-light text-center'>Create Brand
+                            <Link to="/admin/brand">
                                 <i className='bi bi-arrow-left text-light float-end'></i>
                             </Link>
                         </h5>
@@ -92,16 +84,15 @@ export default function AdminUpdateMaincategoryPage() {
                                     <label>Name*</label>
                                     <input type="text"
                                         name="name"
-                                        value={data.name}
                                         onChange={getInputData}
-                                        placeholder='Maincategory Name'
+                                        placeholder='Brand Name'
                                         className={`form-control ${show && errorMessage.name ? 'border-danger' : 'border-primary'}`}
                                     />
                                     {show && errorMessage.name ? <p className='text-danger'>{errorMessage.name}</p> : null}
                                 </div>
 
                                 <div className="col-lg-6 mb-3">
-                                    <label>Pic</label>
+                                    <label>Pic*</label>
                                     <input type="file"
                                         name="pic"
                                         onChange={getInputData}
@@ -112,17 +103,14 @@ export default function AdminUpdateMaincategoryPage() {
 
                                 <div className="col-lg-6 mb-3">
                                     <label>Status*</label>
-                                    <select name="status"
-                                        value={data.status ? "1" : "0"}
-                                        onChange={getInputData}
-                                        className='form-select border-primary'>
+                                    <select name="status" onChange={getInputData} className='form-select border-primary'>
                                         <option value="1">Active</option>
                                         <option value="0">Inactive</option>
                                     </select>
                                 </div>
 
                                 <div className="col-12 mb-3">
-                                    <button className='btn btn-primary w-100'>Update</button>
+                                    <button className='btn btn-primary w-100'>Create</button>
                                 </div>
                             </div>
                         </form>
