@@ -1,12 +1,18 @@
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Swal from 'sweetalert2'
 
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 
+import { getMaincategory, deleteMaincategory } from "../../../Redux/ActionCreators/MaincategoryActionCreators"
+
 export default function AdminMaincategoryPage() {
     let [data, setData] = useState([])
+
+    let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
+    let dispatch = useDispatch()
 
     function deleteRecords(id) {
         // if (window.confirm("Are you sure to delete the Record?")) {
@@ -19,15 +25,9 @@ export default function AdminMaincategoryPage() {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-        }).then(async (result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-                let response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/maincategory/${id}`, {
-                    method: "DELETE",
-                    headers: {
-                        "content-type": "application/json"
-                    }
-                })
-                response = await response.json()
+                dispatch(deleteMaincategory({ id: id }))
                 setData(data.filter(x => x.id !== id))
 
                 Swal.fire({
@@ -39,18 +39,13 @@ export default function AdminMaincategoryPage() {
         });
     }
 
-    useState(() => {
-        (async () => {
-            let response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/maincategory`, {
-                method: "GET",
-                headers: {
-                    "content-type": "application/json"
-                }
-            })
-            response = await response.json()
-            setData(response)
+    useEffect(() => {
+        (() => {
+            dispatch(getMaincategory())
+            if (MaincategoryStateData.length)
+                setData(MaincategoryStateData)
         })()
-    }, [])
+    }, [MaincategoryStateData.length])
 
     return (
         <>

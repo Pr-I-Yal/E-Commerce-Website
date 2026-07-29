@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 import ImageValidators from '../../../Validators/ImageValidators'
 import TextValidators from '../../../Validators/TextValidators'
+
+import { getMaincategory, updateMaincategory } from "../../../Redux/ActionCreators/MaincategoryActionCreators"
 
 export default function AdminUpdateMaincategoryPage() {
     let { id } = useParams()
@@ -19,7 +22,8 @@ export default function AdminUpdateMaincategoryPage() {
     })
 
     let [show, setShow] = useState(false)
-    let [ProductStateData, setProductStateData] = useState([])
+    let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
+    let dispatch = useDispatch()
 
     let navigate = useNavigate()
 
@@ -39,51 +43,35 @@ export default function AdminUpdateMaincategoryPage() {
         setErrorMessage({ ...errorMessage, [name]: name === "pic" ? ImageValidators(e) : TextValidators(e) })
     }
 
-    async function postData(e) {
+    function postData(e) {
         e.preventDefault()
         let error = Object.values(errorMessage).find(x => x !== "")
         if (error)
             setShow(true)
         else {
-            let item = ProductStateData.find(x => x.id !== id && x.name.toLocaleLowerCase() === data.name.toLocaleLowerCase())
+            let item = MaincategoryStateData.find(x => x.id !== id && x.name.toLocaleLowerCase() === data.name.toLocaleLowerCase())
             if (item) {
                 setErrorMessage({ ...errorMessage, name: "Maincategory With This Name Already Exists" })
                 setShow(true)
                 returnF
             }
-            let response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/maincategory/${id}`, {
-                method: "PUT",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: JSON.stringify({ ...data })
-            })
-            response = await response.json()
-            if (response)
-                navigate("/admin/maincategory")
-            else
-                alert("Internal Server Error")
+            dispatch(updateMaincategory({ ...data }))
+            navigate("/admin/maincategory")
         }
     }
 
-    useState(() => {
-        (async () => {
-            let response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/maincategory`, {
-                method: "GET",
-                headers: {
-                    "content-type": "application/json"
-                }
-            })
-            response = await response.json()
-            let item = response.find(x => x.id === id)
-            if (item)
-                setData({ ...data, ...item })
-            else
-                navigate("/admin/maincategory")
-
-            setProductStateData(response)
+    useEffect(() => {
+        (() => {
+            dispatch(getMaincategory())
+            if (MaincategoryStateData.length) {
+                let item = MaincategoryStateData.find(x => x.id === id)
+                if (item)
+                    setData({ ...data, ...item })
+                else
+                    navigate("/admin/maincategory")
+            }
         })()
-    }, [])
+    }, [MaincategoryStateData.length])
 
     return (
         <>
