@@ -38,6 +38,8 @@ import AdminFaqPage from './Pages/Admin/Faq/AdminFaqPage'
 import AdminCreateFaqPage from './Pages/Admin/Faq/AdminCreateFaqPage'
 import AdminUpdateFaqPage from './Pages/Admin/Faq/AdminUpdateFaqPage'
 
+import AdminSettingPage from './Pages/Admin/Setting/AdminSettingPage'
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -77,6 +79,8 @@ export default function App() {
         <Route path='/admin/faq' element={<AdminFaqPage />} />
         <Route path='/admin/faq/create' element={<AdminCreateFaqPage />} />
         <Route path='/admin/faq/update/:id' element={<AdminUpdateFaqPage />} />
+
+        <Route path='/admin/setting' element={<AdminSettingPage />} />
 
         <Route path='/*' element={<ErrorPage />} />
 
