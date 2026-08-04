@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -76,9 +76,9 @@ export default function AdminCreateFeaturePage() {
                                         name="name"
                                         onChange={getInputData}
                                         placeholder='Feature Name'
-                                        className={`form-control ${show && errorMessage.shortDescription ? 'border-danger' : 'border-primary'}`}
+                                        className={`form-control ${show && errorMessage.name ? 'border-danger' : 'border-primary'}`}
                                     />
-                                    {show && errorMessage.shortDescription ? <p className='text-danger'>{errorMessage.shortDescription}</p> : null}
+                                    {show && errorMessage.name ? <p className='text-danger'>{errorMessage.name}</p> : null}
                                 </div>
 
                                 <div className="col-12 mb-3">

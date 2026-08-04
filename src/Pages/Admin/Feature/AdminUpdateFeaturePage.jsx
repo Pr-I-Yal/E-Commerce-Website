@@ -44,7 +44,7 @@ export default function AdminUpdateFeaturePage() {
             if (item) {
                 setErrorMessage({ ...errorMessage, name: "Feature With This Name Already Exists" })
                 setShow(true)
-                returnF
+                return
             }
             dispatch(updateFeature({ ...data }))
             navigate("/admin/feature")

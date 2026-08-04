@@ -6,9 +6,9 @@ import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 import ImageValidators from '../../../Validators/ImageValidators'
 import TextValidators from '../../../Validators/TextValidators'
 
-import { getSubcategory, updateSubcategory } from "../../../Redux/ActionCreators/SubcategoryActionCreators"
+import { getProduct, updateProduct } from "../../../Redux/ActionCreators/ProductActionCreators"
 
-export default function AdminUpdateSubcategoryPage() {
+export default function AdminUpdateProductPage() {
     let { id } = useParams()
     let [data, setData] = useState({
         name: "",
@@ -22,20 +22,20 @@ export default function AdminUpdateSubcategoryPage() {
     })
 
     let [show, setShow] = useState(false)
-    let SubcategoryStateData = useSelector(state => state.SubcategoryStateData)
+    let ProductStateData = useSelector(state => state.ProductStateData)
     let dispatch = useDispatch()
 
     let navigate = useNavigate()
 
     function getInputData(e) {
         let name = e.target.name
-        // let value = name === "pic" ? "subcategory/" + e.target.files[0].name : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
+        // let value = name === "pic" ? "Product/" + e.target.files[0].name : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
         // let value = name === "pic" ? e.target.files[0] : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
         //OR
         let value = ""
-        if (name === "pic"){
-            value = "subcategory/" + e.target.files[0].name
-        // value = e.target.files[0]
+        if (name === "pic") {
+            value = "product/" + e.target.files[0].name
+            // value = e.target.files[0]
         }
         else if (name === "status")
             value = e.target.value === "1" ? true : false
@@ -52,37 +52,37 @@ export default function AdminUpdateSubcategoryPage() {
         if (error)
             setShow(true)
         else {
-            let item = SubcategoryStateData.find(x => x.id !== id && x.name.toLocaleLowerCase() === data.name.toLocaleLowerCase())
+            let item = ProductStateData.find(x => x.id !== id && x.name.toLocaleLowerCase() === data.name.toLocaleLowerCase())
             if (item) {
-                setErrorMessage({ ...errorMessage, name: "Subcategory With This Name Already Exists" })
+                setErrorMessage({ ...errorMessage, name: "Product With This Name Already Exists" })
                 setShow(true)
                 returnF
             }
-            dispatch(updateSubcategory({ ...data }))
+            dispatch(updateProduct({ ...data }))
 
             // let formData = new FormData()
             // formData.append("id", data.id)
             // formData.append("name", data.name)
             // formData.append("pic", data.pic)
             // formData.append("status", data.status)
-            // dispatch(createSubcategory(formData))
+            // dispatch(createProduct(formData))
 
-            navigate("/admin/subcategory")
+            navigate("/admin/product")
         }
     }
 
     useEffect(() => {
         (() => {
-            dispatch(getSubcategory())
-            if (SubcategoryStateData.length) {
-                let item = SubcategoryStateData.find(x => x.id === id)
+            dispatch(getProduct())
+            if (ProductStateData.length) {
+                let item = ProductStateData.find(x => x.id === id)
                 if (item)
                     setData({ ...data, ...item })
                 else
-                    navigate("/admin/subcategory")
+                    navigate("/admin/product")
             }
         })()
-    }, [SubcategoryStateData.length])
+    }, [ProductStateData.length])
 
     return (
         <>
@@ -92,8 +92,8 @@ export default function AdminUpdateSubcategoryPage() {
                         <AdminSidebar />
                     </div>
                     <div className="col-lg-9">
-                        <h5 className='bg-primary p-2 text-light text-center'>Update Subcategory
-                            <Link to="/admin/subcategory">
+                        <h5 className='bg-primary p-2 text-light text-center'>Update Product
+                            <Link to="/admin/product">
                                 <i className='bi bi-arrow-left text-light float-end'></i>
                             </Link>
                         </h5>
@@ -105,7 +105,7 @@ export default function AdminUpdateSubcategoryPage() {
                                         name="name"
                                         value={data.name}
                                         onChange={getInputData}
-                                        placeholder='Subcategory Name'
+                                        placeholder='Product Name'
                                         className={`form-control ${show && errorMessage.name ? 'border-danger' : 'border-primary'}`}
                                     />
                                     {show && errorMessage.name ? <p className='text-danger'>{errorMessage.name}</p> : null}

@@ -30,10 +30,13 @@ export default function AdminUpdateMaincategoryPage() {
     function getInputData(e) {
         let name = e.target.name
         // let value = name === "pic" ? "maincategory/" + e.target.files[0].name : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
+        // let value = name === "pic" ?  e.target.files[0] : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
         //OR
         let value = ""
-        if (name === "pic")
+        if (name === "pic"){
             value = "maincategory/" + e.target.files[0].name
+        // value = e.target.files[0]
+        }
         else if (name === "status")
             value = e.target.value === "1" ? true : false
         else
@@ -56,6 +59,14 @@ export default function AdminUpdateMaincategoryPage() {
                 return
             }
             dispatch(updateMaincategory({ ...data }))
+
+            // let formData = new FormData()
+            // formData.append("id", data.id)
+            // formData.append("name", data.name)
+            // formData.append("pic", data.pic)
+            // formData.append("status", data.status)
+            // dispatch(createMaincategory(formData))
+
             navigate("/admin/maincategory")
         }
     }
