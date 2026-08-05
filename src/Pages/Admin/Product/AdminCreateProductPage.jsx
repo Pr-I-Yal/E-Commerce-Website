@@ -59,12 +59,12 @@ export default function AdminCreateProductPage() {
 
     function getInputData(e) {
         let name = e.target.name
-        // let value = name === "pic" ? Array.from(e.target.files).map(x => "maincategory/" + x.name) : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
+        // let value = name === "pic" ? Array.from(e.target.files).map(x => "product/" + x.name) : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
         // let value = name === "pic" ? e.target.files : name === "status" ? (e.target.value === "1" ? true : false) : e.target.value
         //OR
         let value = ""
         if (name === "pic") {
-            value = Array.from(e.target.files).map(x => "maincategory/" + x.name)
+            value = Array.from(e.target.files).map(x => "product/" + x.name)
             // value = e.target.files
         }
         else if (name === "status" || name === "stock")
@@ -116,9 +116,26 @@ export default function AdminCreateProductPage() {
 
             // let formData = new FormData()
             // formData.append("name", data.name)
-            // formData.append("pic", data.pic)
+            // formData.append("maincategory", data.maincategory||MaincategoryStateData[0].name)
+            // formData.append("subcategory", data.subcategory||SubcategoryStateData[0].name)
+            // formData.append("brand", data.brand||BrandStateData[0].name)
+            // data.color.forEach(item => {
+            //     formData.append("color", item)
+            // })
+            // data.size.forEach(item => {
+            //     formData.append("size", item)
+            // })
+            // data.pic.forEach(item => {
+            //     formData.append("pic", item)
+            // })
+            // formData.append("basePrice", bp)
+            // formData.append("discount", d)
+            // formData.append("finalPrice", fp)
+            // formData.append("stock", data.stock)
+            // formData.append("stockQuantity", stockQuantity)
+            // formData.append("descriptione", description)
             // formData.append("status", data.status)
-            // dispatch(createProduct(formData))
+            // dispatch(updateProduct(formData))
 
             navigate("/admin/product")
         }
@@ -170,7 +187,7 @@ export default function AdminCreateProductPage() {
 
                                 <div className="col-lg-3 col-md-6 mb-3">
                                     <label >Maincategory*</label>
-                                    <select name="maincategory" className='form-select border-primary'>
+                                    <select name="maincategory" onChange={getInputData} className='form-select border-primary'>
                                         {MaincategoryStateData.filter(x => x.status).map((item, index) => {
                                             return <option key={index}>{item.name}</option>
                                             // return <option key={index} value={item.id}>{item.name}</option>
@@ -180,7 +197,7 @@ export default function AdminCreateProductPage() {
 
                                 <div className="col-lg-3 col-md-6 mb-3">
                                     <label >Subcategory*</label>
-                                    <select name="subcategory" className='form-select border-primary'>
+                                    <select name="subcategory" onChange={getInputData} className='form-select border-primary'>
                                         {SubcategoryStateData.filter(x => x.status).map((item, index) => {
                                             return <option key={index}>{item.name}</option>
                                             // return <option key={index} value={item.id}>{item.name}</option>
@@ -190,7 +207,7 @@ export default function AdminCreateProductPage() {
 
                                 <div className="col-lg-3 col-md-6 mb-3">
                                     <label >Brand*</label>
-                                    <select name="brand" className='form-select border-primary'>
+                                    <select name="brand" onChange={getInputData} className='form-select border-primary'>
                                         {BrandStateData.filter(x => x.status).map((item, index) => {
                                             return <option key={index}>{item.name}</option>
                                             // return <option key={index} value={item.id}>{item.name}</option>
@@ -200,7 +217,7 @@ export default function AdminCreateProductPage() {
 
                                 <div className="col-lg-3 col-md-6 mb-3">
                                     <label >Stock*</label>
-                                    <select name="stock" className='form-select border-primary'>
+                                    <select name="stock" onChange={getInputData} className='form-select border-primary'>
                                         <option value="1">Yes</option>
                                         <option value="0">No</option>
                                     </select>
@@ -294,7 +311,9 @@ export default function AdminCreateProductPage() {
                                         onChange={getInputData}
                                         className={`form-control ${show && errorMessage.pic ? 'border-danger' : 'border-primary'}`}
                                     />
-                                    {show && errorMessage.pic ? <p className='text-danger'>{errorMessage.pic}</p> : null}
+                                    {show && errorMessage.pic ? errorMessage.pic.split("|").map((error, index) => {
+                                        return <p className='text-danger' key={index}>{error}</p>
+                                    }) : null}
                                 </div>
 
                                 <div className="col-lg-6 mb-3">

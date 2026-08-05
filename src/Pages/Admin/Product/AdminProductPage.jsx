@@ -69,34 +69,60 @@ export default function AdminProductPage() {
                                 <i className='bi bi-plus text-light float-end'></i>
                             </Link>
                         </h5>
-                        <table className='table table-bordered' id='myTable'>
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Pic</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.map(item => {
-                                    return <tr key={item.id}>
-                                        <td>{item.id}</td>
-                                        <td>{item.name}</td>
-                                        <td>
-                                            <Link to={`${import.meta.env.VITE_APP_IMAGE_SERVER}${item.pic}`} target='_blank'>
-                                                <img src={`${import.meta.env.VITE_APP_IMAGE_SERVER}${item.pic}`} height={70} width={70} alt='' />
-                                            </Link>
-                                        </td>
-                                        <td>{item.status ? "Active" : "Inactive"}</td>
-                                        <td><Link to={`/admin/product/update/${item.id}`} className='btn btn-primary'><i className='bi bi-pencil-square'></i></Link></td>
-                                        <td><button onClick={() => deleteRecords(item.id)} className='btn btn-danger'><i className='bi bi-trash'></i></button></td>
+                        <div className="table-responsive">
+                            <table className='table table-bordered' id='myTable'>
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Maincategory</th>
+                                        <th>Subcategory</th>
+                                        <th>Brand</th>
+                                        <th>Color</th>
+                                        <th>Size</th>
+                                        <th>Base Price</th>
+                                        <th>Discount</th>
+                                        <th>Final Price</th>
+                                        <th>Stock</th>
+                                        <th>Stock Quantity</th>
+                                        <th>Pic</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
-                                })}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {data.map(item => {
+                                        return <tr key={item.id}>
+                                            <td>{item.id}</td>
+                                            <td>{item.name}</td>
+                                            <td>{item.maincategory}</td>
+                                            <td>{item.subcategory}</td>
+                                            <td>{item.brand}</td>
+                                            <td><div style={{ width: 200 }}>{item.color?.join(", ")}</div></td>
+                                            <td><div style={{ width: 150 }}>{item.size?.join(", ")}</div></td>
+                                            <td>&#8377;{item.basePrice}</td>
+                                            <td>{item.discount}% Off</td>
+                                            <td>&#8377;{item.finalPrice}</td>
+                                            <td>{item.stock ? "In Stock" : "Out of Stock"}</td>
+                                            <td>{item.stockQuantity}</td>
+                                            <td>
+                                                <div style={{ width: 350 }}>
+                                                    {item.pic?.map((pic, index) => {
+                                                        return <Link key={index} to={`${import.meta.env.VITE_APP_IMAGE_SERVER}${pic}`} target='_blank'>
+                                                            <img src={`${import.meta.env.VITE_APP_IMAGE_SERVER}${pic}`} className='m-1' height={70} width={70} alt="" />
+                                                        </Link>
+                                                    })}
+                                                </div>
+                                            </td>
+                                            <td>{item.status ? "Active" : "Inactive"}</td>
+                                            <td><Link to={`/admin/product/update/${item.id}`} className='btn btn-primary'><i className='bi bi-pencil-square'></i></Link></td>
+                                            <td><button onClick={() => deleteRecords(item.id)} className='btn btn-danger'><i className='bi bi-trash'></i></button></td>
+                                        </tr>
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
