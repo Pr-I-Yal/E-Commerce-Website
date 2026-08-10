@@ -1,4 +1,7 @@
 /********** Template CSS **********/
+.text-justify {
+    text-align: justify;
+}
 
 /*** Spinner ***/
 #spinner {
@@ -93,7 +96,7 @@
 }
 
 @media (max-width: 991.98px) {
-    .navbar .navbar-nav .nav-link  {
+    .navbar .navbar-nav .nav-link {
         margin-left: 0;
         padding: 10px 0;
     }
@@ -196,11 +199,11 @@
 .project-item img {
     transition: .5s;
 }
-  
+
 .project-item:hover img {
     transform: scale(1.2);
 }
-  
+
 .project-overlay {
     position: absolute;
     padding: 25px;
@@ -285,11 +288,11 @@
 .team-item img {
     transition: .5s;
 }
-  
+
 .team-item:hover img {
     transform: scale(1.2);
 }
-  
+
 .team-overlay {
     position: absolute;
     padding: 30px;
@@ -394,19 +397,19 @@
         max-width: 100% !important;
     }
 
-    .newsletter .newsletter-text  {
+    .newsletter .newsletter-text {
         padding-right: calc(((100% - 960px) / 2) + .75rem);
     }
 }
 
 @media (min-width: 1200px) {
-    .newsletter .newsletter-text  {
+    .newsletter .newsletter-text {
         padding-right: calc(((100% - 1140px) / 2) + .75rem);
     }
 }
 
 @media (min-width: 1400px) {
-    .newsletter .newsletter-text  {
+    .newsletter .newsletter-text {
         padding-right: calc(((100% - 1320px) / 2) + .75rem);
     }
 }
@@ -418,7 +421,7 @@
     margin-bottom: 10px;
     padding: 0;
     text-align: left;
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, .5);
     font-weight: normal;
     transition: .3s;
 }
@@ -444,7 +447,7 @@
 }
 
 .footer .copyright a {
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, .5);
 }
 
 .footer .copyright a:hover {

@@ -158,8 +158,10 @@ export default function AdminUpdateProductPage() {
                 let item = ProductStateData.find(x => x.id === id)
                 if (item) {
                     setData({ ...data, ...item, pic: [] })
-                    syncDocument(createStructuredContent(""), item?.description ?? "");
                     setOldPics(item.pic)
+                    setTimeout(() => {
+                        syncDocument(createStructuredContent(""), item?.description ?? "");
+                    }, 500)
                 }
                 else
                     navigate("/admin/product")

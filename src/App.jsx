@@ -7,6 +7,7 @@ import Footer from './Components/Footer'
 import HomePage from './Pages/HomePage'
 import AboutPage from './Pages/AboutPage'
 import FeaturePage from './Pages/FeaturePage'
+import FaqPage from './Pages/FaqPage'
 import ShopPage from './Pages/ShopPage'
 import ProductPage from './Pages/ProductPage'
 import TestimonialPage from './Pages/TestimonialPage'
@@ -14,7 +15,7 @@ import ErrorPage from './Pages/ErrorPage'
 import ContactUsPage from './Pages/ContactUsPage'
 import PrivacyPolicyPage from './Pages/PolicyPages/PrivacyPolicyPage'
 import RefundPolicyPage from './Pages/PolicyPages/RefundPolicyPage'
-import DataPolicyPage from './Pages/PolicyPages/DataPolicyPage'
+import TermsAndConditionsPage from './Pages/PolicyPages/TermsAndConditionsPage'
 
 import AdminHomePage from './Pages/Admin/AdminHomePage'
 
@@ -52,6 +53,7 @@ export default function App() {
         <Route path='' element={<HomePage />} />
         <Route path='/about' element={<AboutPage />} />
         <Route path='/feature' element={<FeaturePage />} />
+        <Route path='/faq' element={<FaqPage />} />
         <Route path='/shop' element={<ShopPage />} />
         <Route path='/product/:id' element={<ProductPage />} />
         <Route path='/testimonial' element={<TestimonialPage />} />
@@ -59,7 +61,7 @@ export default function App() {
 
         <Route path='/privacy-policy' element={<PrivacyPolicyPage />} />
         <Route path='/refund-policy' element={<RefundPolicyPage />} />
-        <Route path='/data-policy' element={<DataPolicyPage />} />
+        <Route path='/tc' element={<TermsAndConditionsPage />} />
 
         {/* Admin Routes */}
         <Route path='/admin' element={<AdminHomePage />} />

@@ -77,7 +77,7 @@ export default function AdminSettingPage() {
                     syncDocument(createStructuredContent(""), SettingStateData[0].privacyPolicy ?? "", "privacyPolicy");
                     syncDocument(createStructuredContent(""), SettingStateData[0].termsAndConditions ?? "", "termsAndConditions");
                     syncDocument(createStructuredContent(""), SettingStateData[0].refundPolicy ?? "", "refundPolicy");
-                })
+                }, 500)
             }
         })()
     }, [SettingStateData.length])

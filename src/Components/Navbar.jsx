@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
+
+import { getSetting } from "../Redux/ActionCreators/SettingActionCreators"
 
 export default function Navbar() {
     let [settingData, setSettingData] = useState({
@@ -15,6 +18,22 @@ export default function Navbar() {
         youtube: import.meta.env.VITE_APP_YOUTUBE,
         instagram: import.meta.env.VITE_APP_INSTAGRAM,
     })
+
+    let SettingStateData = useSelector(state => state.SettingStateData)
+    let dispatch = useDispatch()
+
+    useEffect(() => {
+        (() => {
+            dispatch(getSetting())
+            if (SettingStateData.length) {
+                let item = {}
+                Object.keys(settingData).forEach(key => {
+                    item[key] = SettingStateData[0][key] ? SettingStateData[0][key] : settingData[key]
+                })
+                setSettingData({ ...item })
+            }
+        })()
+    }, [SettingStateData.length])
     return (
         <>
             <div className='bg-dark'>
