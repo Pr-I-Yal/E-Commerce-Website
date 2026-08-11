@@ -6,11 +6,20 @@ export default function SingleProduct({ item }) {
         <div className="team-item position-relative overflow-hidden">
             <img className="img-fluid w-100" src={`${import.meta.env.VITE_APP_IMAGE_SERVER}${item.pic[0]}`} style={{ height: 350 }} alt="" />
             <div className="team-overlay">
-                <small className="mb-2">{item.brand}</small>
-                <h6 className="lh-base text-light">{item.name}</h6>
-                <h5 className='text-light'><del>&#8377;{item.basePrice}</del> &#8377;{item.finalPrice}<sup>{item.discount}% Off</sup></h5>
-                <div className="d-flex justify-content-center">
-                    <Link className="btn btn-outline-light btn-sm-square border-2 p-2 w-100" to={`product/${item.id}`}>
+                <div className="position-absolute bottom-0 start-0 m-3 d-flex">
+                    <small className="px-3 py-2 bg-success text-light">{item.brand}</small>
+                    <small className="px-3 py-2 bg-success text-light">{item.stockQuantity} Left in Stock</small>
+                </div>
+                <h6 className="position-absolute top-0 start-0 m-3 px-2 py-1 text-light bg-dark bg-opacity-75 rounded">{item.name}</h6>
+                <div className="position-absolute bottom-0 start-0 mb-5 ms-3">
+                    <h5 className='text-light mb-2'>
+                        <del>&#8377;{item.basePrice}</del>
+                        <span className="ms-2">&#8377;{item.finalPrice}</span>
+                        <sup className="ms-2 text-warning">{item.discount}% Off</sup>
+                    </h5>
+                </div>
+                <div className="position-absolute bottom-0 end-0 m-3">
+                    <Link className="btn btn-outline-light border-2 px-3 py-2" to={`product/${item.id}`}>
                         <i className="text-success bi bi-cart-plus"></i>
                         <span className='ms-2'>Add to Cart</span>
                     </Link>
