@@ -55,9 +55,15 @@ export default function ProductSlider({ title, data }) {
                     <div className="row g-0">
                         <div className="col-lg-5 wow fadeIn" data-wow-delay="0.1s">
                             <div className="d-flex flex-column justify-content-center bg-primary h-100 p-5">
-                                <h1 className="text-white mb-5">Our Latest <span
-                                    className="text-uppercase text-primary bg-light px-2">Products</span></h1>
-                                <h4 className="text-white mb-0">for {title}</h4>
+                                {title === "Other Related Products" ?
+                                    <h1 className="text-white mb-5"><span
+                                        className="text-uppercase text-primary bg-light px-2">{title}</span></h1> :
+                                    <>
+                                        <h1 className="text-white mb-5">Our Latest <span
+                                            className="text-uppercase text-primary bg-light px-2">Products</span></h1>
+                                        <h4 className="text-white mb-0">for {title}</h4>
+                                    </>
+                                }
                             </div>
                         </div>
                         <div className="col-lg-7">

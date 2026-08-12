@@ -25,6 +25,8 @@ export default function ShopPage() {
 
     let [sortFilter, setSortFilter] = useState("1")
     let [search, setSearch] = useState("")
+    let [min, setMin] = useState(-1)
+    let [max, setMax] = useState(-1)
 
     let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
     let SubcategoryStateData = useSelector(state => state.SubcategoryStateData)
@@ -45,6 +47,7 @@ export default function ShopPage() {
     }
 
     function filter(selected) {
+        setSearch("")
         let data = ProductStateData.filter(x => x.status && (
             (selected.maincategory?.length === 0 || selected?.maincategory?.includes(x.maincategory)) &&
             (selected.subcategory?.length === 0 || selected?.subcategory?.includes(x.subcategory)) &&
@@ -55,18 +58,14 @@ export default function ShopPage() {
         applySortFilter(data, sortFilter)
     }
 
-    function applySortFilter(data, value) {
-        if (value === "1")
-            setData(data.sort((x, y) => y.id.localeCompare(x.id)))
-        else if (value === "2")
-            setData(data.sort((x, y) => x.finalPrice - y.finalPrice))
-        else
-            setData(data.sort((x, y) => y.finalPrice - x.finalPrice))
-
-        setSortFilter(value)
-    }
-
     function postSearch() {
+        setSelected({
+            maincategory: [],
+            subcategory: [],
+            brand: [],
+            color: [],
+            size: []
+        })
         let ch = search.toLocaleLowerCase()
         let data = ProductStateData.filter(x => x.status && (
             (x.name.toLocaleLowerCase().includes(ch)) ||
@@ -77,6 +76,20 @@ export default function ShopPage() {
         ))
 
         applySortFilter(data, sortFilter)
+    }
+
+    function applySortFilter(data, value) {
+        if (min !== -1 && max !== -1) {
+            data = data.filter(x => x.finalPrice >= min && x.finalPrice <= max)
+        }
+        if (value === "1")
+            setData(data.sort((x, y) => y.id.localeCompare(x.id)))
+        else if (value === "2")
+            setData(data.sort((x, y) => x.finalPrice - y.finalPrice))
+        else
+            setData(data.sort((x, y) => y.finalPrice - x.finalPrice))
+
+        setSortFilter(value)
     }
 
     useEffect(() => {
@@ -158,6 +171,31 @@ export default function ShopPage() {
                             })}
                         </ul>
 
+                        <div className="my-3">
+                            <form onSubmit={(e) => {
+                                e.preventDefault()
+                                if (search !== "")
+                                    postSearch()
+                                else
+                                    filter(selected)
+                            }}>
+                                <div className="row">
+                                    <div className="col-6 mb-3">
+                                        <label>Minimum Amount</label>
+                                        <input type="number" name="min" onChange={(e) => setMin(e.target.value)} value={min === -1 ? '' : min} className='form-control' placeholder='Min. Amount' />
+                                    </div>
+                                    <div className="col-6 mb-3">
+                                        <label>Maximum Amount</label>
+                                        <input type="number" name="max" onChange={(e) => setMax(e.target.value)} value={max === -1 ? '' : max} className='form-control' placeholder='Max. Amount' />
+                                    </div>
+
+                                    <div className="col-12">
+                                        <button type="submit" className='btn btn-primary w-100'>Apply Filter</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
                     <div className="col-md-9">
                         <div className="row">
@@ -167,7 +205,7 @@ export default function ShopPage() {
                                     postSearch()
                                 }}>
                                     <div className="btn-group w-100">
-                                        <input type="search" name="search" onChange={(e) => setSearch(e.target.value)} placeholder='Search Products By Name, Category, Brand or Color etc' className='form-control' />
+                                        <input type="search" name="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder='Search Products By Name, Category, Brand or Color etc' className='form-control' />
                                         <button className='btn btn-primary' onSubmit={postSearch}>Search</button>
                                     </div>
                                 </form>

@@ -19,7 +19,7 @@ export default function SingleProduct({ item }) {
                     </h5>
                 </div>
                 <div className="position-absolute bottom-0 end-0 m-3">
-                    <Link className="btn btn-outline-light border-2 px-3 py-2" to={`product/${item.id}`}>
+                    <Link className="btn btn-outline-light border-2 px-3 py-2" to={`/product/${item.id}`}>
                         <i className="text-success bi bi-cart-plus"></i>
                         <span className='ms-2'>Add to Cart</span>
                     </Link>
