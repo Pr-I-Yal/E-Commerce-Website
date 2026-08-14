@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCube, Pagination } from 'swiper/modules';
+
+import 'swiper/css';
+import 'swiper/css/effect-cube';
+
 import BreadCrum from '../Components/BreadCrum'
 
 import { getProduct } from "../Redux/ActionCreators/ProductActionCreators"
@@ -12,7 +18,7 @@ export default function ProductPage() {
     let [selected, setSelected] = useState({
         color: '',
         size: '',
-        quantity: '1'
+        quantity: 1
     })
 
     let [data, setData] = useState({})
@@ -42,7 +48,28 @@ export default function ProductPage() {
 
             <div className="container my-3">
                 <div className="row">
-                    <div className="col-md-6"></div>
+                    <div className="col-md-6">
+                        <Swiper
+                            effect={'cube'}
+                            grabCursor={true}
+                            loop={true}
+                            cubeEffect={{
+                                shadow: true,
+                                slideShadows: true,
+                                shadowOffset: 20,
+                                shadowScale: 0.94,
+                            }}
+                            pagination={true}
+                            modules={[EffectCube, Pagination]}
+                            className="mySwiper"
+                        >
+                            {data.pic?.map((pic, index) => {
+                                return <SwiperSlide key={index}>
+                                    <img className='w-100' style={{ height: 500 }} src={`${import.meta.env.VITE_APP_IMAGE_SERVER}${pic}`} alt='Product Image' />
+                                </SwiperSlide>
+                            })}
+                        </Swiper>
+                    </div>
                     <div className="col-md-6">
                         <h5 className='bg-primary text-center p-2 text-light'>{data.name}</h5>
                         <div className="table-responsive">

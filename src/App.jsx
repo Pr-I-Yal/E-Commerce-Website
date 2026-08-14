@@ -17,6 +17,8 @@ import PrivacyPolicyPage from './Pages/PolicyPages/PrivacyPolicyPage'
 import RefundPolicyPage from './Pages/PolicyPages/RefundPolicyPage'
 import TermsAndConditionsPage from './Pages/PolicyPages/TermsAndConditionsPage'
 
+import SignUpPage from './Pages/User/SignUpPage'
+
 import AdminHomePage from './Pages/Admin/AdminHomePage'
 
 import AdminMaincategoryPage from './Pages/Admin/Maincategory/AdminMaincategoryPage'
@@ -44,6 +46,7 @@ import AdminSettingPage from './Pages/Admin/Setting/AdminSettingPage'
 import AdminProductPage from './Pages/Admin/Product/AdminProductPage'
 import AdminCreateProductPage from './Pages/Admin/Product/AdminCreateProductPage'
 import AdminUpdateProductPage from './Pages/Admin/Product/AdminUpdateProductPage'
+import LoginPage from './Pages/User/LogInPage'
 
 export default function App() {
   return (
@@ -62,6 +65,9 @@ export default function App() {
         <Route path='/privacy-policy' element={<PrivacyPolicyPage />} />
         <Route path='/refund-policy' element={<RefundPolicyPage />} />
         <Route path='/tc' element={<TermsAndConditionsPage />} />
+
+        <Route path='/signup' element={<SignUpPage />} />
+        <Route path='/login' element={<LoginPage />} />
 
         {/* Admin Routes */}
         <Route path='/admin' element={<AdminHomePage />} />
