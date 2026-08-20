@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 
 import { getSetting } from "../Redux/ActionCreators/SettingActionCreators"
 
@@ -21,6 +21,12 @@ export default function Navbar() {
 
     let SettingStateData = useSelector(state => state.SettingStateData)
     let dispatch = useDispatch()
+    let navigate = useNavigate()
+
+    function logout() {
+        localStorage.clear()
+        navigate("/login")
+    }
 
     useEffect(() => {
         (() => {
@@ -76,19 +82,22 @@ export default function Navbar() {
                                 <NavLink to="/contact" className="nav-item nav-link ">Contact Us</NavLink>
                                 <NavLink to="/admin" className="nav-item nav-link ">Admin</NavLink>
 
-                                <div className="nav-item dropdown">
-                                    <a href="#!" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">Harshita Priyal</a>
-                                    <div className="dropdown-menu bg-light mt-2">
-                                        <Link to="/profile?option=Profile" className="dropdown-item">Profile</Link>
-                                        <Link to="/admin" className="dropdown-item">Admin Dashboard</Link>
-                                        <Link to="/profile?option=Wishlist" className="dropdown-item">Wishlist</Link>
-                                        <Link to="/profile?option=Orders" className="dropdown-item">Orders</Link>
-                                        <Link to="/profile?option=Address" className="dropdown-item">Address</Link>
-                                        <Link to="/cart" className="dropdown-item">Cart</Link>
-                                        <Link to="/checkout" className="dropdown-item">Checkout</Link>
-                                        <button className="dropdown-item">Log Out</button>
-                                    </div>
-                                </div>
+                                {localStorage.getItem("login") ?
+                                    <div className="nav-item dropdown">
+                                        <a href="#!" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">{localStorage.getItem("name")}</a>
+                                        <div className="dropdown-menu bg-light mt-2">
+                                            <Link to="/profile?option=Profile" className="dropdown-item">Profile</Link>
+                                            {localStorage.getItem("role") !== "Buyer" ? <Link to="/admin" className="dropdown-item">Admin Dashboard</Link> : null}
+                                            <Link to="/profile?option=Wishlist" className="dropdown-item">Wishlist</Link>
+                                            <Link to="/profile?option=Orders" className="dropdown-item">Orders</Link>
+                                            <Link to="/profile?option=Address" className="dropdown-item">Address</Link>
+                                            <Link to="/cart" className="dropdown-item">Cart</Link>
+                                            <Link to="/checkout" className="dropdown-item">Checkout</Link>
+                                            <button className="dropdown-item" onClick={logout}>Log Out</button>
+                                        </div>
+                                    </div> :
+                                    <NavLink to="/login" className="nav-item nav-link ">Login</NavLink>
+                                }
                             </div>
                         </div>
                     </nav>

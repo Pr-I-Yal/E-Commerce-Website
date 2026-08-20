@@ -18,6 +18,9 @@ import RefundPolicyPage from './Pages/PolicyPages/RefundPolicyPage'
 import TermsAndConditionsPage from './Pages/PolicyPages/TermsAndConditionsPage'
 
 import SignUpPage from './Pages/User/SignUpPage'
+import LoginPage from './Pages/User/LogInPage'
+
+import ProfilePage from './Pages/User/ProfilePage'
 
 import AdminHomePage from './Pages/Admin/AdminHomePage'
 
@@ -46,7 +49,6 @@ import AdminSettingPage from './Pages/Admin/Setting/AdminSettingPage'
 import AdminProductPage from './Pages/Admin/Product/AdminProductPage'
 import AdminCreateProductPage from './Pages/Admin/Product/AdminCreateProductPage'
 import AdminUpdateProductPage from './Pages/Admin/Product/AdminUpdateProductPage'
-import LoginPage from './Pages/User/LogInPage'
 
 export default function App() {
   return (
@@ -68,6 +70,9 @@ export default function App() {
 
         <Route path='/signup' element={<SignUpPage />} />
         <Route path='/login' element={<LoginPage />} />
+
+        {/* Buyer Routes */}
+        <Route path='/profile' element={<ProfilePage />} />
 
         {/* Admin Routes */}
         <Route path='/admin' element={<AdminHomePage />} />

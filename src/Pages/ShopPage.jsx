@@ -117,7 +117,7 @@ export default function ShopPage() {
         <>
             <BreadCrum title="Shop" />
 
-            <div className="container-fluid my-3">
+            <div className="container my-3">
                 <div className="row">
                     <div className="col-md-3">
 
