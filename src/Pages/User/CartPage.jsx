@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 
 import BreadCrum from '../../Components/BreadCrum'
 
-import { deleteCart, getCart } from "../../Redux/ActionCreators/CartActionCreators"
+import { deleteCart, getCart, updateCart } from "../../Redux/ActionCreators/CartActionCreators"
 
 export default function CartPage() {
     let [data, setData] = useState([])
@@ -57,6 +57,7 @@ export default function CartPage() {
             item.total = item.total + item.price
         }
         let index = data.findIndex(x => x.id === id)
+        dispatch(updateCart({ ...item }))
         data[index] = { ...item }
         calculate(data)
     }
