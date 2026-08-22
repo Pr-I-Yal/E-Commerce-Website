@@ -21,6 +21,8 @@ import SignUpPage from './Pages/User/SignUpPage'
 import LoginPage from './Pages/User/LogInPage'
 
 import ProfilePage from './Pages/User/ProfilePage'
+import CartPage from './Pages/User/CartPage'
+import CheckoutPage from './Pages/User/CheckoutPage'
 
 import AdminHomePage from './Pages/Admin/AdminHomePage'
 
@@ -50,6 +52,7 @@ import AdminProductPage from './Pages/Admin/Product/AdminProductPage'
 import AdminCreateProductPage from './Pages/Admin/Product/AdminCreateProductPage'
 import AdminUpdateProductPage from './Pages/Admin/Product/AdminUpdateProductPage'
 
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -73,6 +76,8 @@ export default function App() {
 
         {/* Buyer Routes */}
         <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/cart' element={<CartPage />} />
+        <Route path='/checkout' element={<CheckoutPage />} />
 
         {/* Admin Routes */}
         <Route path='/admin' element={<AdminHomePage />} />

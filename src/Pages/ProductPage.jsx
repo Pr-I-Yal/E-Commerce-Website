@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,9 +9,11 @@ import 'swiper/css';
 import 'swiper/css/effect-cube';
 
 import BreadCrum from '../Components/BreadCrum'
+import ProductSlider from '../Components/ProductSlider'
 
 import { getProduct } from "../Redux/ActionCreators/ProductActionCreators"
-import ProductSlider from '../Components/ProductSlider'
+import { getCart, createCart } from "../Redux/ActionCreators/CartActionCreators"
+import { getWishlist, createWishlist } from "../Redux/ActionCreators/WishlistActionCreators"
 
 export default function ProductPage() {
     let { id } = useParams()
@@ -25,7 +27,53 @@ export default function ProductPage() {
     let [relatedData, setRelatedData] = useState([])
 
     let ProductStateData = useSelector(state => state.ProductStateData)
+    let CartStateData = useSelector(state => state.CartStateData)
+    let WishlistStateData = useSelector(state => state.WishlistStateData)
+
     let dispatch = useDispatch()
+    let navigate = useNavigate()
+
+    function addToCart() {
+        let item = CartStateData.find(x => x.user === localStorage.getItem("userid") && x.product === id)
+        if (!item) {
+            item = {
+                user: localStorage.getItem("userid"),
+                product: id,
+                color: selected.color,
+                size: selected.size,
+                quantity: selected.quantity,
+                total: data.finalPrice * selected.quantity,
+
+                name: data.name,
+                brand: data.brand,
+                stockQuantity: data.stockQuantity,
+                price: data.finalPrice,
+                pic: data.pic[0],
+            }
+            dispatch(createCart(item))
+        }
+        navigate("/cart")
+    }
+
+    function addToWishlist() {
+        let item = WishlistStateData.find(x => x.user === localStorage.getItem("userid") && x.product === id)
+        if (!item) {
+            item = {
+                user: localStorage.getItem("userid"),
+                product: id,
+
+                name: data.name,
+                brand: data.brand,
+                color: data.color,
+                size: data.size,
+                stockQuantity: data.stockQuantity,
+                price: data.finalPrice,
+                pic: data.pic[0],
+            }
+            dispatch(createWishlist(item))
+        }
+        navigate("/profile?option=Wishlist")
+    }
 
     useEffect(() => {
         (() => {
@@ -42,6 +90,15 @@ export default function ProductPage() {
             }
         })()
     }, [ProductStateData.length, id])
+
+    useEffect(() => {
+        (() => dispatch(getCart()))()
+    }, [CartStateData.length])
+
+    useEffect(() => {
+        (() => dispatch(getWishlist()))()
+    }, [WishlistStateData.length])
+
     return (
         <>
             <BreadCrum title={data.name ?? "Product"} />
@@ -123,7 +180,7 @@ export default function ProductPage() {
                                         <td colSpan={2}>
                                             <div className="row">
                                                 <div className="col-4">
-                                                    <div className="btn-group w-100">
+                                                    {data.stock ? <div className="btn-group w-100">
                                                         <button className='btn btn-primary'
                                                             onClick={() => selected.quantity === 1 ? null : setSelected({ ...selected, quantity: selected.quantity - 1 })}>
                                                             <i className='bi bi-dash'></i>
@@ -133,12 +190,13 @@ export default function ProductPage() {
                                                             onClick={() => selected.quantity === data.stockQuantity ? null : setSelected({ ...selected, quantity: selected.quantity + 1 })}>
                                                             <i className='bi bi-plus'></i>
                                                         </button>
-                                                    </div>
+                                                    </div> : null}
                                                 </div>
                                                 <div className="col-8">
                                                     <div className="btn-group w-100">
-                                                        <button className='btn btn-primary'><i className='bi bi-cart-plus me-2'></i>Add To Cart</button>
-                                                        <button className='btn btn-success'><i className='bi bi-suit-heart me-2'></i>Wishlist</button>
+                                                        {data.stock ? <button className='btn btn-primary' onClick={addToCart}><i className='bi bi-cart-plus me-2'></i>Add To Cart</button>
+                                                            : null}
+                                                        <button className='btn btn-success' onClick={addToWishlist}><i className='bi bi-suit-heart me-2'></i>Add To Wishlist</button>
                                                     </div>
                                                 </div>
                                             </div>
