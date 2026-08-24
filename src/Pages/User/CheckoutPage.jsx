@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import Breadcrum from '../../Components/BreadCrum'
 
@@ -16,9 +16,15 @@ export default function CheckoutPage() {
     let [shipping, setShipping] = useState(0)
     let [subtotal, setSubtotal] = useState(0)
 
+    let [selected, setSelected] = useState({
+        deliveryAddress: {},
+        paymentMode: "COD"
+    })
+
     let CartStateData = useSelector(state => state.CartStateData)
     let ProductStateData = useSelector(state => state.ProductStateData)
     let dispatch = useDispatch()
+    let navigate = useNavigate()
 
     function calculate(cart) {
         let total = 0
@@ -32,6 +38,30 @@ export default function CheckoutPage() {
             setTotal(total)
         }
         setSubtotal(total)
+    }
+
+    function placeorder() {
+        let item = {
+            user: localStorage.getItem("userid"),
+            deliveryAddress: selected.deliveryAddress,
+            orderStatus: "Order Has Been Placed",
+            paymentMode: selected.paymentMode,
+            paymentStatus: "Pending",
+            subtotal: subtotal,
+            shipping: shipping,
+            total: total,
+            date: new Date(),
+            products: data
+        }
+        dispatch(createCheckout(item))
+        data.forEach(x => {
+            let p = ProductStateData.find(p => p.id === x.product)
+            p.stockQuantity = p.stockQuantity - x.quantity
+            p.stock = p.stockQuantity === 0 ? false : true
+            dispatch(updateProduct(p))
+            dispatch(deleteCart({ id: x.id }))
+        })
+        navigate("/order-confirmation")
     }
 
     useEffect(() => {
@@ -61,6 +91,8 @@ export default function CheckoutPage() {
             })
             response = await response.json()
             setAddress(response.address ?? [])
+            if (response.address?.length)
+                setSelected({ ...selected, deliveryAddress: { ...response.address[0] } })
         })()
     }, [ProductStateData.length])
 
@@ -73,8 +105,16 @@ export default function CheckoutPage() {
                     <div className="col-md-6">
                         <h5 className='text-center p-2 bg-primary text-light'>Delivery Address</h5>
                         {address.length ?
-                            <>
-                            </> :
+                            address.map((item, index) => {
+                                return <div className="card px-3 py-2 mb-3" key={index} onClick={() => setSelected({ ...selected, deliveryAddress: { ...item } })}>
+                                    <h5>{item.name}</h5>
+                                    <p>{item.phone},{item.email}</p>
+                                    <p>{item.address}</p>
+                                    <p>{item.pin},{item.city},{item.state}</p>
+                                    {selected.deliveryAddress?.address === item.address ? <i className='bi bi-check fs-3 position-absolute end-0 p-2'></i> : null}
+                                </div>
+                            })
+                            :
                             <div className='card p-5 text-center'>
                                 <h4>No Address Record Found</h4>
                                 <Link to="/profile?option=Address" className="btn btn-primary">Create Address</Link>
@@ -123,9 +163,18 @@ export default function CheckoutPage() {
                                         <th>Total</th>
                                         <td>&#8377;{total}</td>
                                     </tr>
+                                    <tr>
+                                        <th>Payment Mode</th>
+                                        <td>
+                                            <select name="mode" onChange={(e) => setSelected({ ...selected, paymentMode: e.target.value })} className='form-select'>
+                                                <option value="COD">COD</option>
+                                                <option value="Net Banking">Net Banking/Card/UPI</option>
+                                            </select>
+                                        </td>
+                                    </tr>
                                     {address.length ? <tr>
                                         <td colSpan={2}>
-                                            <button className='btn btn-primary w-100'>Place Order</button>
+                                            <button className='btn btn-primary w-100' onClick={placeorder}>Place Order</button>
                                         </td>
                                     </tr> : null}
                                 </tbody>

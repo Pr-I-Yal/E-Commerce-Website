@@ -1,5 +1,6 @@
 import React from 'react'
 import BreadCrum from '../Components/BreadCrum'
+import { Link } from 'react-router-dom'
 
 export default function ErrorPage() {
     return (
@@ -14,7 +15,7 @@ export default function ErrorPage() {
                             <h1 className="mb-4">Page Not Found</h1>
                             <p className="mb-4">We’re sorry, the page you have looked for does not exist in our website! Maybe go to
                                 our home page or try to use a search?</p>
-                            <a className="btn btn-primary py-3 px-4" href="#!">Go Back To Home</a>
+                            <Link className="btn btn-primary py-3 px-4" to="/">Go Back To Home</Link>
                         </div>
                     </div>
                 </div>
