@@ -82,7 +82,7 @@ export default function Footer() {
                         <div className="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.7s">
                             <h5 className="text-white mb-4">Other Links</h5>
                             <Link className="btn btn-link text-light" to="/testimonial">Testimonial</Link>
-                            <Link className="btn btn-link text-light" to="/contact">Contact Us</Link>
+                            <Link className="btn btn-link text-light" to="/contactus">Contact Us</Link>
                             <Link className="btn btn-link text-light" to="/privacy-policy">Privacy Policy</Link>
                             <Link className="btn btn-link text-light" to="/tc">Terms and Conditions</Link>
                             <Link className="btn btn-link text-light" to="/refund-policy">Refund Policy</Link>
@@ -101,6 +101,7 @@ export default function Footer() {
                                     <Link to="/about">About</Link>
                                     <Link to="/feature">Features</Link>
                                     <Link to="/faq">FAQs</Link>
+                                    <Link to="/contactus">Contact Us</Link>
                                 </div>
                             </div>
                         </div>

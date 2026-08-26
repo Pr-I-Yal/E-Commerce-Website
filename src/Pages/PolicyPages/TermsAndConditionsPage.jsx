@@ -25,6 +25,7 @@ export default function TermsAndConditionsPage() {
             }
         })()
     }, [SettingStateData.length])
+    
     return (
         <>
             <BreadCrum title="Terms And Conditions" />

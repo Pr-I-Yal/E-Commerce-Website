@@ -2,9 +2,28 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import TextValidators from '../Validators/TextValidators'
+
 import BreadCrum from '../Components/BreadCrum'
 
 import { getSetting } from "../Redux/ActionCreators/SettingActionCreators"
+import { createContactUs } from "../Redux/ActionCreators/ContactUsActionCreators"
+
+const dataOptions = {
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: ""
+}
+
+const errorMessageOptions = {
+    name: "Name Field is Mandatory",
+    email: "Email Address Field is Mandatory",
+    phone: "Phone Number Field is Mandatory",
+    subject: "Subject Field is Mandatory",
+    message: "Message Field is Mandatory"
+}
 
 export default function ContactUsPage() {
     let [settingData, setSettingData] = useState({
@@ -22,9 +41,37 @@ export default function ContactUsPage() {
         instagram: import.meta.env.VITE_APP_INSTAGRAM,
     })
 
+    let [data, setData] = useState({ ...dataOptions })
+    let [errorMessage, setErrorMessage] = useState({ ...errorMessageOptions })
+    let [show, setShow] = useState(false)
+    let [showSuccessMessage, setShowSuccessMessage] = useState(false)
+
     let SettingStateData = useSelector(state => state.SettingStateData)
     let dispatch = useDispatch()
 
+    function getInputData(e) {
+        let { name, value } = e.target
+        setData({ ...data, [name]: value })
+        setErrorMessage({ ...errorMessage, [name]: TextValidators(e) })
+    }
+
+    function postData(e) {
+        e.preventDefault()
+        let error = Object.values(errorMessage).find(x => x !== "")
+        if (error)
+            setShow(true)
+        else {
+            dispatch(createContactUs({
+                ...data,
+                date: new Date(),
+                status: true
+            }))
+            setShowSuccessMessage(true)
+            setData({ ...dataOptions })
+            setErrorMessage({ ...errorMessage })
+            setShow(false)
+        }
+    }
     useEffect(() => {
         (() => {
             dispatch(getSetting())
@@ -116,36 +163,49 @@ export default function ContactUsPage() {
                                 <h1 className="mb-5">Have Any Query? <span className="text-uppercase text-primary bg-light px-2">Contact
                                     Us</span></h1>
                             </div>
-                            <p className="text-center mb-4">The contact form is currently inactive. Get a functional and working
-                                contact form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code
-                                and you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+                            <p className="text-center mb-4">{showSuccessMessage ? `Thank you for contacting ${settingData.siteName}! Your message has been successfully submitted.
+                             Our support team has received you request and will review it carefully. We'll get back to you as soon as possible.
+                              We appreciate your time and look forward to assissting you.` : `Have a question or need assistance?
+                               Our ${settingData.siteName} support team is here to help. Whether you need help with an order, product, payment, delivery, return, or any other concern,
+                                feel free to reach out. We're always happy to assist you.`}</p>
                             <div className="wow fadeIn" data-wow-delay="0.3s">
-                                <form>
+                                <form onSubmit={postData}>
                                     <div className="row g-3">
                                         <div className="col-12">
                                             <div className="form-floating">
-                                                <input type="text" className="form-control" id="name" placeholder="Your Name" />
-                                                <label for="name">Your Name</label>
+                                                <input type="text" className={`form-control ${show && errorMessage.name ? 'border-danger' : ''}`} name="name" value={data.name} onChange={getInputData} placeholder="Your Name" />
+                                                <label>Your Name</label>
                                             </div>
+                                            {show && errorMessage.name ? <p className='text-danger'>{errorMessage.name}</p> : null}
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-floating">
-                                                <input type="email" className="form-control" id="email" placeholder="Your Email" />
-                                                <label for="email">Your Email</label>
+                                                <input type="email" className={`form-control ${show && errorMessage.email ? 'border-danger' : ''}`} name="email" value={data.email} onChange={getInputData} placeholder="Your Email Address" />
+                                                <label>Your Email Address</label>
                                             </div>
+                                            {show && errorMessage.email ? <p className='text-danger'>{errorMessage.email}</p> : null}
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-floating">
+                                                <input type="text" className={`form-control ${show && errorMessage.phone ? 'border-danger' : ''}`} name="phone" value={data.phone} onChange={getInputData} placeholder="Your Phone Number" />
+                                                <label>Your Phone Number</label>
+                                            </div>
+                                            {show && errorMessage.phone ? <p className='text-danger'>{errorMessage.phone}</p> : null}
                                         </div>
                                         <div className="col-12">
                                             <div className="form-floating">
-                                                <input type="text" className="form-control" id="subject" placeholder="Subject" />
-                                                <label for="subject">Subject</label>
+                                                <input type="text" className={`form-control ${show && errorMessage.subject ? 'border-danger' : ''}`} name="subject" value={data.subject} onChange={getInputData} placeholder="Subject" />
+                                                <label>Subject</label>
                                             </div>
+                                            {show && errorMessage.subject ? <p className='text-danger'>{errorMessage.subject}</p> : null}
                                         </div>
                                         <div className="col-12">
                                             <div className="form-floating">
-                                                <textarea className="form-control" placeholder="Leave a message here" id="message"
+                                                <textarea className={`form-control ${show && errorMessage.message ? 'border-danger' : ''}`} name="message" value={data.message} onChange={getInputData} placeholder="Leave a message here"
                                                     style={{ height: "150px" }}></textarea>
                                                 <label for="message">Message</label>
                                             </div>
+                                            {show && errorMessage.message ? <p className='text-danger'>{errorMessage.message}</p> : null}
                                         </div>
                                         <div className="col-12">
                                             <button className="btn btn-primary w-100 py-3" type="submit">Send Message</button>

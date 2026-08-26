@@ -53,6 +53,14 @@ import AdminProductPage from './Pages/Admin/Product/AdminProductPage'
 import AdminCreateProductPage from './Pages/Admin/Product/AdminCreateProductPage'
 import AdminUpdateProductPage from './Pages/Admin/Product/AdminUpdateProductPage'
 
+import AdminNewsletterPage from './Pages/Admin/Newsletter/AdminNewsletterPage'
+
+import AdminContactUsPage from './Pages/Admin/ContactUs/AdminContactUsPage'
+import AdminContactUsShowPage from './Pages/Admin/ContactUs/AdminContactUsShowPage'
+
+import AdminCheckoutPage from './Pages/Admin/Checkout/AdminCheckoutPage'
+import AdminCheckoutShowPage from './Pages/Admin/Checkout/AdminCheckoutShowPage'
+
 
 export default function App() {
   return (
@@ -66,7 +74,7 @@ export default function App() {
         <Route path='/shop' element={<ShopPage />} />
         <Route path='/product/:id' element={<ProductPage />} />
         <Route path='/testimonial' element={<TestimonialPage />} />
-        <Route path='/contact' element={<ContactUsPage />} />
+        <Route path='/contactus' element={<ContactUsPage />} />
 
         <Route path='/privacy-policy' element={<PrivacyPolicyPage />} />
         <Route path='/refund-policy' element={<RefundPolicyPage />} />
@@ -109,6 +117,14 @@ export default function App() {
         <Route path='/admin/product' element={<AdminProductPage />} />
         <Route path='/admin/product/create' element={<AdminCreateProductPage />} />
         <Route path='/admin/product/update/:id' element={<AdminUpdateProductPage />} />
+
+        <Route path='/admin/newsletter' element={<AdminNewsletterPage />} />
+
+        <Route path='/admin/contactus' element={<AdminContactUsPage />} />
+        <Route path='/admin/contactus/show/:id' element={<AdminContactUsShowPage />} />
+
+        <Route path='/admin/checkout' element={<AdminCheckoutPage />} />
+        <Route path='/admin/checkout/show/:id' element={< AdminCheckoutShowPage />} />
 
         <Route path='/*' element={<ErrorPage />} />
 
