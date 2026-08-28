@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-import BreadCrum from '../../Components/BreadCrum'
+import Breadcrum from '../../Components/Breadcrum'
 
 import Profile from '../../Components/User/Profile'
 import UpdateProfile from '../../Components/User/UpdateProfile'
@@ -10,17 +10,18 @@ import Orders from '../../Components/User/Orders'
 import Address from '../../Components/User/Address'
 
 export default function ProfilePage() {
-    let [searchParams, setSearchParams] = useSearchParams()
     let [option, setOption] = useState("Profile")
+    let [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
         (() => {
-            setOption(searchParams.get("option" || "Profile"))
+            setOption(searchParams.get("option") || "Profile")
         })()
     }, [searchParams])
+    
     return (
         <>
-            <BreadCrum title="Your Profile" />
+            <Breadcrum title="Your Profile" />
 
             <div className="container my-3">
                 <div className="row">
@@ -43,6 +44,7 @@ export default function ProfilePage() {
                     </div>
                 </div>
             </div>
+
         </>
     )
 }

@@ -80,7 +80,6 @@ export default function Navbar() {
                                 <NavLink to="/faq" className="nav-item nav-link ">Faq</NavLink>
                                 <NavLink to="/testimonial" className="nav-item nav-link ">Testimonial</NavLink>
                                 <NavLink to="/contactus" className="nav-item nav-link ">Contact Us</NavLink>
-                                <NavLink to="/admin" className="nav-item nav-link ">Admin</NavLink>
 
                                 {localStorage.getItem("login") ?
                                     <div className="nav-item dropdown">

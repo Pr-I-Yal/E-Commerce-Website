@@ -53,13 +53,10 @@ export default function AdminCheckoutShowPage() {
                     setOrderStatus(item.orderStatus)
                     setPaymentStatus(item.paymentStatus)
                 }
-                else {
-                    window.history.back()
-                }
             }
         })()
     }, [CheckoutStateData.length])
-    
+
     return (
         <>
             <div className="container-fluid my-3">

@@ -15,9 +15,8 @@ export default function Profile({ option }) {
             if (response) {
                 setUser({ ...response })
             }
-            else {
-                alert("Something Went Wrong!")
-            }
+            else
+                alert("Something Went Wrong")
         })()
     }, [option])
 

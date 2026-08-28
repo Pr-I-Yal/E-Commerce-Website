@@ -17,6 +17,7 @@ export default function Orders() {
         setData(CheckoutStateData.filter(x => x.user === localStorage.getItem("userid")))
     })()
   }, [CheckoutStateData.length])
+
   return (
     <>
       {data.length ?

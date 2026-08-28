@@ -1,11 +1,25 @@
-import React from 'react'
-import BreadCrum from '../Components/BreadCrum'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+
+import Breadcrum from '../Components/BreadCrum'
 
 export default function ErrorPage() {
+    let navigate = useNavigate()
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (localStorage.getItem("login")) {
+                if (window.location.pathname === "/profile")
+                    navigate(0)
+                else if (window.location.pathname === "/admin" && localStorage.getItem("role") !== "Buyer")
+                    navigate(0)
+            }
+        }, 500)
+    }, [])
+
     return (
         <>
-            <BreadCrum title="404! Page Not Found" />
+            <Breadcrum title="404! Page Not Found" />
             <div className="container-fluid py-5 wow fadeIn" data-wow-delay="0.1s">
                 <div className="container text-center py-5">
                     <div className="row justify-content-center">

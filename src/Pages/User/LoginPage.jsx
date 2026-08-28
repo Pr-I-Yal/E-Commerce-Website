@@ -20,32 +20,26 @@ export default function LoginPage() {
 
     async function postData(e) {
         e.preventDefault()
-        let error = Object.values(errorMessage).find(x => x !== "")
-        if (error) {
-            setShow(true)
-        }
-        else {
-            var response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/user`)
-            response = await response.json()
-            let item = response.find(x => x.username?.toLocaleLowerCase() === data.username?.toLocaleLowerCase() || x.email.toLocaleLowerCase() === data.username.toLocaleLowerCase())
-            if (item) {
-                if (item.status === false) {
-                    setErrorMessage("Your Account Has Been Blocked Due to Some Unauthorized Activity. Please Contact Us to Unblock Your Account .")
-                }
-                else {
-                    localStorage.setItem("login", true)
-                    localStorage.setItem("name", item.name)
-                    localStorage.setItem("userid", item.id)
-                    localStorage.setItem("role", item.role)
-                    if (item.role === "Buyer")
-                        navigate("/profile")
-                    else
-                        navigate("/admin")
-                }
+        var response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/user`)
+        response = await response.json()
+        let item = response.find(x => x.username?.toLocaleLowerCase() === data.username?.toLocaleLowerCase() || x.email.toLocaleLowerCase() === data.username.toLocaleLowerCase())
+        if (item) {
+            if (item.status === false) {
+                setErrorMessage("Your Account Has Been Blocked Due to Some Unauthorized Activity. Please Contact Us to Unblock Your Account .")
             }
             else {
-                setErrorMessage("Invalid Username Or Password")
+                localStorage.setItem("login", true)
+                localStorage.setItem("name", item.name)
+                localStorage.setItem("userid", item.id)
+                localStorage.setItem("role", item.role)
+                if (item.role === "Buyer")
+                    navigate("/profile")
+                else
+                    navigate("/admin")
             }
+        }
+        else {
+            setErrorMessage("Invalid Username Or Password")
         }
     }
 

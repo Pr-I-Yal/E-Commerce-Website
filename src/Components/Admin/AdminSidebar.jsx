@@ -48,10 +48,13 @@ export default function AdminSidebar() {
                 <i className='bi bi-cart-check fs-5'></i>
                 <span className='float-end'>Checkout</span>
             </Link>
-            <Link to="/admin/user" className="list-group-item list-group-item-action active mb-1">
-                <i className='bi bi-people fs-5'></i>
-                <span className='float-end'>User</span>
-            </Link>
+            {localStorage.getItem("role") === "Super Admin" ?
+                <>
+                    <Link to="/admin/user" className="list-group-item list-group-item-action active mb-1">
+                        <i className='bi bi-people fs-5'></i>
+                        <span className='float-end'>User</span>
+                    </Link>
+                </> : null}
         </div>
     )
 }
