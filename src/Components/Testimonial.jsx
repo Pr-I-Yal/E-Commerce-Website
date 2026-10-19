@@ -1,114 +1,82 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/effect-creative';
-
-// import required modules
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper/modules';
+import "swiper/css";
+
+import { getTestimonial } from "../Redux/ActionCreators/TestimonialActionCreators"
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
 
 const sliderOptions = {
-    grabCursor: true,
-    effect: 'creative',
-    loop: true,
-    creativeEffect: {
-        prev: {
-            shadow: true,
-            translate: [0, 0, -400],
-        },
-        next: {
-            translate: ['100%', 0, 0],
-        },
+  loop: true,
+  breakpoints: {
+    640: {
+      slidesPerView: 1,
+      spaceBetween: 0,
     },
-    autoplay: {
-        delay: 2500,
-        disableOnInteraction: false,
+    768: {
+      slidesPerView: 2,
+      spaceBetween: 10,
     },
-    modules: [Autoplay],
-    className: "mySwiper"
-
+    1000: {
+      slidesPerView: 3,
+      spaceBetween: 10,
+    }
+  },
+  autoplay: {
+    delay: 2000,
+    disableOnInteraction: false
+  },
+  modules: [Autoplay]
 }
 
 export default function Testimonial() {
-    return (
-        <>
-            <div className="container-xxl py-5">
-                <div className="container py-5">
-                    <div className="row justify-content-center">
-                        <div className="col-md-12 col-lg-9">
-                            <div className="testimonial-carousel wow fadeIn" data-wow-delay="0.2s">
-                                <Swiper {...sliderOptions}>
-                                    <SwiperSlide>
-                                        <div className="testimonial-item">
-                                            <div className="row g-5 align-items-center">
-                                                <div className="col-md-6">
-                                                    <div className="testimonial-img">
-                                                        <img className="img-fluid" src="img/testimonial-1.jpg" alt="" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="testimonial-text pb-5 pb-md-0">
-                                                        <h3>Sustainable Material</h3>
-                                                        <p>Aliqu diam amet diam et eos labore. Clita erat ipsum et lorem et sit, sed
-                                                            stet no labore lorem sit. Sanctus clita duo justo et tempor eirmod magna
-                                                            dolore erat
-                                                            amet</p>
-                                                        <h5 className="mb-0">Boris Johnson</h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <div className="testimonial-item">
-                                            <div className="row g-5 align-items-center">
-                                                <div className="col-md-6">
-                                                    <div className="testimonial-img">
-                                                        <img className="img-fluid" src="img/testimonial-2.jpg" alt="" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="testimonial-text pb-5 pb-md-0">
-                                                        <h3>Customer Satisfaction</h3>
-                                                        <p>Clita erat ipsum et lorem et sit, sed
-                                                            stet no labore lorem sit. Sanctus clita duo justo et tempor eirmod magna
-                                                            dolore erat
-                                                            amet</p>
-                                                        <h5 className="mb-0">Alexander Bell</h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </SwiperSlide>
-                                    <SwiperSlide>
-                                        <div className="testimonial-item">
-                                            <div className="row g-5 align-items-center">
-                                                <div className="col-md-6">
-                                                    <div className="testimonial-img">
-                                                        <img className="img-fluid" src="img/testimonial-3.jpg" alt="" />
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="testimonial-text pb-5 pb-md-0">
-                                                        <h3>Budget Friendly</h3>
-                                                        <p>Diam amet diam et eos labore. Clita erat ipsum et lorem et sit, sed
-                                                            stet no labore lorem sit. Sanctus clita duo justo et tempor eirmod magna
-                                                            dolore erat
-                                                            amet</p>
-                                                        <h5 className="mb-0">Bradley Gordon</h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </SwiperSlide>
-                                </Swiper>
-                            </div>
-                        </div>
-                    </div>
+  let [review, setReview] = useState([])
+
+  let TestimonialStateData = useSelector(state => state.TestimonialStateData)
+  let dispatch = useDispatch()
+
+  function getStar(star) {
+    if (star === "5")
+      return <span><i className='bi bi-star-fill text-warning'></i><i className='bi bi-star-fill text-warning'></i><i className='bi bi-star-fill text-warning'></i><i className='bi bi-star-fill text-warning'></i><i className='bi bi-star-fill text-warning'></i></span>
+    else
+      return <span><i className='bi bi-star-fill text-warning'></i><i className='bi bi-star-fill text-warning'></i><i className='bi bi-star-fill text-warning'></i><i className='bi bi-star-fill text-warning'></i><i className='bi bi-star text-warning'></i></span>
+  }
+
+  useEffect(() => {
+    (() => {
+      dispatch(getTestimonial())
+      if (TestimonialStateData.length) {
+        setReview(TestimonialStateData.filter(x => x.star >= "2"))
+      }
+    })()
+  }, [TestimonialStateData.length])
+
+  return (
+    <div className="container-fluid products productList overflow-hidden my-5">
+      <div className="container py-5">
+        <div className="mx-auto text-center mb-5">
+          <h4 className="text-primary border-bottom border-primary border-2 d-inline-block p-2 title-border-radius wow fadeInUp"
+            data-wow-delay="0.1s">Products</h4>
+          <h1 className="mb-0 display-3 wow fadeInUp" data-wow-delay="0.3s">What Customers Says</h1>
+        </div>
+        <div className="py-4 wow fadeInUp" data-wow-delay="0.3s">
+          <Swiper {...sliderOptions}>
+            {review.map(item => {
+              return <SwiperSlide key={item.id}>
+                <div className="card p-3">
+                  <h4><Link href={`/product/${item.product}`} className='btn btn-link text-start'>{item.productName}</Link></h4>
+                  {getStar(item.star)}
+                  <p className='my-testimonial'>{item.message}</p>
+                  <h5>{item.username}</h5>
+
                 </div>
-            </div>
-        </>
-    )
+              </SwiperSlide>
+            })}
+          </Swiper>
+        </div>
+      </div>
+    </div>
+  )
 }

@@ -7,11 +7,10 @@ export default function TestimonialReducer(state = [], action) {
             return [...state, action.payload]
 
         case GET_TESTIMONIAL_RED:
-            return action.payload
+            return Array.isArray(action.payload) ? action.payload : [];
 
         case UPDATE_TESTIMONIAL_RED:
-            index = state.findIndex(x => x.id === action.payload.id)
-            state[index] = { ...action.payload }
+            return state.map((item) => item.id === action.payload.id ? { ...item, ...action.payload } : item);
 
         case DELETE_TESTIMONIAL_RED:
             return state.filter(x => x.id !== action.payload.id)
